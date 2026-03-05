@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conclave 1492 — Lighthaven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1410;
+      --parchment: #f5eed8;
+      --parchment-dark: #e8dfc0;
+      --gold: #b8963e;
+      --gold-light: #d4af5a;
+      --crimson: #8b1a1a;
+      --cream: #faf6ea;
+      --text: #2c2318;
+      --muted: #6b5c42;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 110vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9d/Cesare-borgia-leaving-the-vatican-giuseppe-lorenzo-gatteri-Alamy.jpg');
+      background-size: cover;
+      background-position: center 65%;
+      will-change: transform;
+    }
+
+    .hero-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,7,4,0.35) 0%,
+        rgba(10,7,4,0.2) 40%,
+        rgba(10,7,4,0.75) 70%,
+        rgba(10,7,4,0.97) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 2rem 5rem;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      color: #e8dfc0;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+      text-shadow: 0 1px 12px rgba(0,0,0,0.95);
+    }
+
+    .hero-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      font-weight: 700;
+      color: var(--parchment);
+      line-height: 1.0;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.4rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+
+    .hero-year {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 4vw, 2.6rem);
+      font-weight: 400;
+      color: var(--gold-light);
+      letter-spacing: 0.18em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.5s;
+    }
+
+    .hero-tagline {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: #d4c9a8;
+      max-width: 580px;
+      margin: 0 auto 3rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.7s;
+    }
+
+    .hero-cta {
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.9s;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: var(--gold);
+      padding: 1rem 2.8rem;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--parchment);
+      background: transparent;
+      padding: 1rem 2.8rem;
+      text-decoration: none;
+      border: 1px solid rgba(245,238,216,0.35);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      margin-left: 1rem;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    /* ── ORNAMENT ── */
+    .ornament {
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.2rem;
+      letter-spacing: 0.5em;
+      opacity: 0.6;
+      margin: 2rem 0;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .page {
+      background: var(--cream);
+      position: relative;
+    }
+
+    .page::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--crimson), var(--gold), transparent);
+    }
+
+    .section {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--parchment-dark);
+    }
+
+    /* ── FAST FACTS ── */
+    .fast-facts {
+      background: var(--ink);
+      color: var(--parchment);
+    }
+
+    .facts-inner {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .fact-item {
+      border-left: 1px solid rgba(184,150,62,0.3);
+      padding-left: 1.5rem;
+      text-align: left;
+    }
+
+    .fact-item:first-child { border-left: none; padding-left: 0; }
+
+    .fact-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .fact-value {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.15rem;
+      color: var(--parchment);
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+    }
+
+    p {
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    em {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      border-left: 3px solid var(--gold);
+      padding: 1.2rem 0 1.2rem 2rem;
+      margin: 2.5rem 0;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--crimson);
+      line-height: 1.55;
+    }
+
+    /* ── YEAR IN HISTORY ── */
+    .timeline {
+      background: var(--parchment-dark);
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 560px) { .timeline-grid { grid-template-columns: 1fr; } }
+
+    .timeline-item {
+      background: var(--cream);
+      padding: 1.4rem 1.6rem;
+      border-top: 2px solid var(--gold);
+    }
+
+    .timeline-date {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── EMAIL SECTION ── */
+    .email-section {
+      background: var(--ink);
+      color: var(--parchment);
+      text-align: center;
+    }
+
+    .email-inner {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .email-section h2 {
+      color: var(--parchment);
+      margin-bottom: 0.8rem;
+    }
+
+    .email-section p {
+      color: #c4b896;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Mailchimp embed placeholder */
+    .gform-embed {
+      /* Thin gold border to frame the Google Form against the dark background */
+      border: 1px solid rgba(184,150,62,0.3);
+      overflow: hidden;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #110e0a;
+      color: #5a4f3a;
+      text-align: center;
+      padding: 2.5rem 1rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      margin: 2.5rem 0;
+      color: var(--gold);
+      opacity: 0.5;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: currentColor;
+    }
+    .divider-symbol { font-size: 0.9rem; letter-spacing: 0.3em; }
+
+    /* ── ROLES ── */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .role-card {
+      border-top: 2px solid var(--gold);
+      padding-top: 1.2rem;
+    }
+
+    .role-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--crimson);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem !important;
+    }
+
+    .role-card p:last-child {
+      font-size: 0.97rem;
+      color: var(--muted);
+    }
+
+    /* ── SCHEDULE ── */
+    .schedule-phases {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .phase {
+      padding: 1.8rem 0 1.8rem 2rem;
+      border-left: 2px solid var(--parchment-dark);
+      position: relative;
+    }
+
+    .phase::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 2rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .phase-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.4rem !important;
+    }
+
+    .phase h3 {
+      margin-bottom: 0.7rem;
+    }
+
+    .phase p {
+      font-size: 0.97rem;
+      color: var(--muted);
+    }
+
+    .schedule-note {
+      font-size: 0.9rem !important;
+      color: var(--muted) !important;
+      font-style: italic;
+      margin-top: 2rem !important;
+      border-top: 1px solid var(--parchment-dark);
+      padding-top: 1.2rem;
+    }
+
+    .schedule-note a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .schedule-note a:hover { text-decoration: underline; }
+
+    /* ── CREDIT ── */
+    .art-credit {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.3);
+      font-family: 'Cormorant Garamond', serif;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-gradient"></div>
+    <div class="hero-content">
+      <p class="eyebrow">Lighthaven · Berkeley, CA</p>
+      <h1 class="hero-title">Conclave</h1>
+      <p class="hero-year">1492</p>
+      <p class="hero-tagline">A 40-person negotiation simulation<br>set during the most consequential papal election in history.</p>
+      <div class="hero-cta">
+        <a href="#register" class="btn-primary">Express Interest</a>
+        <a href="#about" class="btn-ghost">Learn More</a>
+      </div>
+    </div>
+    <p class="art-credit">Cesare Borgia Leaving the Vatican — Giuseppe Lorenzo Gatteri (1877)</p>
+  </section>
+
+  <!-- FAST FACTS -->
+  <div class="fast-facts">
+    <div class="facts-inner">
+      <div class="fact-item">
+        <p class="fact-label">Format</p>
+        <p class="fact-value">8–10 evening sessions</p>
+      </div>
+      <div class="fact-item">
+        <p class="fact-label">Players</p>
+        <p class="fact-value">~40 participants</p>
+      </div>
+      <div class="fact-item">
+        <p class="fact-label">Venue</p>
+        <p class="fact-value">Lighthaven, Berkeley CA</p>
+      </div>
+      <div class="fact-item">
+        <p class="fact-label">When</p>
+        <p class="fact-value">Late May / Early June</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PAGE -->
+  <main class="page">
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="reveal">
+        <p class="section-label">What is this</p>
+        <h2>Pope Innocent VIII is dead.</h2>
+        <p>Conclave 1492 is a <strong>40-person negotiation exercise</strong> set during the papal election of 1492, the most complex, high-stakes political event of the Renaissance. Play an ambitious cardinal, a mighty king, a daring queen, or a lowly Vatican functionary. You'll arrive with allies, rivals, secrets, and leverage, but so will everyone else. Over several weeks of evening sessions, you'll scheme, bargain, cross, double-cross, and occasionally pray for salvation. And halfway through, one of you will be crowned Pope. If you aspire to be the next Borgia, Medici, or Ferdinand of Aragon — or if you aspire to defeat them — this is your training ground. Negotiate the future of the world.</p>
+        <p>Most of the characters are closely based on real historical figures, actual people who lived through the events of 1492, with resources, relationships, and goals drawn from the historical record. But some characters and some issues have been moved around in time, to fill the room with the most interesting people and put all the most important tensions on the table. For example, some of the cardinals in our game didn’t become cardinals until after 1492, and some issues are up for debate early. <em>This is an alternate history, not a reconstruction.</em></p>
+        <p>The simulation has previously been run as the capstone of a university negotiation course. It was, by all accounts, an insane amount of fun. Now we want to bring it to Lighthaven, for anyone who wants to find out what they're actually capable of when Fortune's wheel is turning.</p>
+        <ul style="list-style: none; padding: 0; margin: 1.5rem 0;">
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Marry off your nephews to half of Europe.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Bankrupt a rival's family.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Bankrupt your own family.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Commission a ceiling or a giant warship.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Accidentally become King of Greece.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Escape your monastic vows and go on to standardize Italian punctuation.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Start a war nobody wanted.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Start a war everyone wanted.</li>
+  <li style="padding: 0.4rem 0; border-bottom: 1px solid var(--parchment-dark);">⟡ &nbsp;Become Pope.</li>
+
+</ul>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section class="section" id="roles">
+      <div class="reveal">
+        <p class="section-label">Who you'll play</p>
+        <h2>Every character has secrets. Most of them have enemies.</h2>
+        <p>All ~40 player characters are closely connected. Some of you are relatives by blood or marriage. Some of you went to seminary together — the same lectures, the same taverns, the same questionable parts of the city at questionable hours of the night. Some of your families have been trying to destroy each other for two hundred years. Characters fall into three groups:</p>
+
+        <div class="roles-grid">
+          <div class="role-card">
+            <p class="role-title">Cardinals</p>
+            <p>The majority of players. Assembled here to represent every corner of Christendom, drawn from every walk of life: scholars, monks, crusaders, mercenary captains. Cousins of kings, scions of great banking families, and sons of dirt-poor farmers. Italians alongside Frenchmen and Spaniards. You have one vote in the conclave. Use it wisely.</p>
+          </div>
+          <div class="role-card">
+            <p class="role-title">Vatican Functionaries</p>
+            <p>A small group who run the machinery of the election: counting ballots, managing the sealed chamber, enforcing the rules of the conclave. Your office is neutral. Are you?</p>
+          </div>
+          <div class="role-card">
+            <p class="role-title">Outside Powers</p>
+            <p>Seven players represent the great secular powers of Europe: three kings, three queens, and one Roman mob. You cannot vote, but you can threaten, promise, and scheme from the outside, influencing the conclave through whatever channels you can establish.</p>
+          </div>
+        </div>
+
+        <p style="margin-top:1.5rem;">Character assignments are made by the organizers after the warm-up sessions, based on each player's demonstrated style and interests.</p>
+
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section class="section" id="schedule">
+      <div class="reveal">
+        <p class="section-label">How it works</p>
+        <h2>A crash course in negotiation. Then one of history's greatest negotiations.</h2>
+        <p>The event runs across <strong>8–10 evening sessions</strong>, tentatively <strong>late May or early June</strong>, with the exact schedule set once we know who's coming.</p>
+        <p>Each session is approximately two hours. Before a pope is elected, the functionaries run two rounds of voting per session; after, the new pontiff fields petitions from everyone who wants something. Otherwise, it's unstructured negotiation. Move through Lighthaven's rooms and corridors, pass notes, broker deals, find your allies, avoid your enemies. Just you and thirty-nine other people with competing interests and incomplete information.</p>
+
+        <div class="schedule-phases">
+          <div class="phase">
+            <p class="phase-label">Phase I · Sessions 1–4</p>
+            <h3>Practice Negotiations</h3>
+            <p>Before the simulation begins, we run a short series of structured negotiation exercises. These are genuinely fun in their own right, but they also serve a purpose. They are an opportunity to learn skills and lessons that you can put into practice during the election. If you go into the election with some training, you will get far more out of the experience. The practice rounds also let the organizer get a feel for each player's style and level of comfort, which informs character assignments. <em>Practice exercises will likely be held over Zoom, making it easy to participate from anywhere.</em> </p>
+          </div>
+          <div class="phase">
+            <p class="phase-label">Phase II · Sessions 5–8</p>
+            <h3>The Conclave</h3>
+            <p>The main event. A main building serves as the Sistine Chapel, as cardinals and functionaries are sealed inside, with the basement and tunnels designated for functionaries only. The Outside Powers convene in a separate location, influencing the conclave by whatever means they can arrange. Rounds of negotiation and voting proceed until one cardinal is elected pope, crowned, and besieged with petitions.</p>
+          </div>
+          <div class="phase">
+            <p class="phase-label">Phase III · Sessions 9–10</p>
+            <h3>The Aftermath</h3>
+            <p>The great powers of Europe go to war. Then, two final sessions of post-war diplomacy as we re-draw the map of Europe. A chance to secure, or recover, everything the election put into play.</p>
+          </div>
+        </div>
+
+        <p class="schedule-note">Exact dates TBD based on interest. <a href="#register">Express interest below</a> and you'll be the first to know.</p>
+      </div>
+    </section>
+
+    <!-- YEAR IN HISTORY -->
+    <section class="section timeline" style="background:var(--parchment-dark); max-width:100%; padding: 5rem 2rem;">
+      <div style="max-width:740px; margin:0 auto;" class="reveal">
+        <p class="section-label">Why 1492</p>
+        <h2>The pivot point of the modern world.</h2>
+        <p>It is July 25, 1492. The papal throne is empty. The cardinals are gathering. And the world outside the Sistine Chapel is moving faster than anyone yet understands. The election of this pope will be different, for it happens at the exact hinge between the medieval and modern worlds. Every one of the forces below is already in motion.</p>
+        <div class="timeline-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 2.5rem;">
+
+          <div class="timeline-item">
+            <p class="timeline-date">~1450</p>
+            <h3>The Printing Press</h3>
+            <p>Forty years ago, Gutenberg's press was set loose on an unsuspecting world. The Church's monopoly on written knowledge is already cracking. Bibles, pamphlets, heresies, and vulgar poetry can now be copied faster than any inquisitor can audit or burn them. Books that would once have cost as much as a manor house now cost merely as much as a man's fine coat. Nobody yet knows what this means. They will.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">1453</p>
+            <h3>The Fall of Constantinople</h3>
+            <p>The Ottoman Sultan Mehmed II took the city thirty-nine years ago, ending a thousand years of the Eastern Roman Empire. Greek scholars fled west into Italy, carrying manuscripts of Plato and Aristotle that no one in Europe had read for centuries. The Renaissance caught fire.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">1480</p>
+            <h3>The Ottomans</h3>
+            <p> Twelve years ago, Ottoman forces landed at Otranto in southern Italy, burned its houses, slaughtered 12,000 of its people, enslaved 5,000 more, and held the city for nearly a year before being driven out. Christendom has not forgotten. But Mehmed II died in 1481; Sultan Bayezid II now rules, after defeating his half-brother Cem in a civil war. What manner of man is he?</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">December 1488</p>
+            <h3>When Will Portugal Reach India?</h3>
+            <p> For decades, Portugal has been feeling its way south and east around Africa. In 1488, Bartolomeu Dias rounded the Cape of Good Hope and confirmed that the coast turns northeast, toward India. The route exists. When Portuguese ships reach the Indian spice markets, they will cut out every Arab, Persian, and Venetian middleman who has grown rich on the trade for centuries. The age of exploration is not a distant dream. It is on the horizon. </p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">January 2, 1492 · Six months ago</p>
+            <h3>The Reconquista Ends</h3>
+            <p>After 780 years, the last Muslim emirate in Iberia surrendered to Ferdinand and Isabella. Granada fell to cannon and siege, gunpowder finishing what zeal could not. Spain is powerful, Catholic, and immensely ambitious. But it is not unified, not yet. Ferdinand rules Aragon; Isabella rules Castile. Spain, as a single kingdom, does not yet quite exist.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">March 31, 1492 · Four months ago</p>
+            <h3>The Expulsion of the Jews</h3>
+            <p>Ferdinand and Isabella signed the Alhambra Decree. Between 40,000 and 100,000 Jews have been expelled from Spain. Many are still on the road. Sultan Bayezid, recognizing an opportunity, dispatched his navy to bring them to Ottoman lands. Spain is losing skilled workers, scholars, and doctors. The sultan is gaining them. "It is said that King Ferdinand is a clever man," the sultan reportedly remarked, "but by driving the Jews from his own country, he is impoverishing his empire and enriching mine." </p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">August 3, 1492 · Nine days ago</p>
+            <h3>Columbus Has Sailed</h3>
+            <p>A Genoese navigator named Cristoforo Colombo departed Palos de la Frontera nine days ago with three ships and a theory. He believes he can reach Asia by sailing west, because the ocean cannot possibly be that wide. Most experts think he is wrong about the distance. Portugal rejected him; they have their own route. Ferdinand and Isabella, flush from the Reconquista, gave him the ships almost as an afterthought. </p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Right Now</p>
+            <h3>Neither Holy Nor Roman</h3>
+            <p>Maximilian I is the new Holy Roman Emperor, and waiting to be crowned by the new Pope. In theory his empire is sovereign over the kings of Europe. In practice it is a fractured patchwork of German princes who resist every attempt at central authority. For four hundred years the emperors and the popes have fought over who holds temporal power in the Christian world, a struggle that has torn Italy in half. That struggle is not over.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Right Now</p>
+            <h3>The House of Valois</h3>
+            <p>Since 1454, the Peace of Lodi has kept Italy's five great powers in an uneasy but functional balance. It is held together by constant diplomacy, mutual suspicion, and the occasional carefully chosen war. It is also about to end. Charles VIII of France is twenty-two years old, ambitious, and possessed of dynastic claims on Naples. If he marches south — and many believe he will — he will discover that Italy is rich, beautiful... and divided. The cardinals choosing the next pope are also choosing how Italy will meet the French king.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Ongoing</p>
+            <h3>The Medici &amp; the Banks</h3>
+            <p>Florence has been the beating heart of the Renaissance under the Medici, patrons of Botticelli, Michelangelo, Leonardo; bankers to popes and kings; and protectors of more than one dangerous mind. Other banking dynasties, like the Fuggers of Augsburg, are rising around Europe. Enormous wealth is flowing into the hands of men whose loyalty is split between their duty, their faith, and their ledgers. The College of Cardinals you are joining has noticed, and so has everyone else.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Ongoing</p>
+            <h3>Is Man's Nature Fixed or Variable?</h3>
+            <p>When Constantinople fell in 1453, Greek scholars fled west with manuscripts no one in Europe had read for centuries. A generation of new thinkers went back to the original sources, read Plato in Greek, and started to ask what had actually been written. In 1486, a twenty-three year old named Pico della Mirandola proposed nine hundred theses for public debate in Rome, with an introduction called <em>Oration on the Dignity of Man</em>, arguing that humanity alone among God's creatures has no fixed place in creation, free to become whatever it wills. Pope Innocent VIII called it heresy and had him arrested. The same impulse to go back to the sources and strip away the glosses may eventually be applied to the Bible itself, with consequences no one in this room is prepared for.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Ongoing</p>
+            <h3>Cracks in the Foundations</h3>
+            <p>Martin Luther is just nine years old. But the friar Savonarola is preaching hellfire from the pulpit of Florence cathedral right now. He is prophesying the Church's ruin, drawing crowds so large they spill into the square. He is radical but he is not entirely wrong. The selling of indulgences, the buying of offices, the popes with their mistresses and their armies. The pressure that has been building for generations is beginning to find the cracks.</p>
+          </div>
+
+          <div class="timeline-item">
+            <p class="timeline-date">Right Now</p>
+            <h3>The Prince</h3>
+            <p>Niccolò Machiavelli is twenty-three years old, working as a clerk for a Florentine banker; invisible to history, but watching everything. He has grown up watching the Medici rule Florence with silk gloves over iron fists, watching kings and princes maneuver for advantage in the name of virtue, watching princes of the Church buy votes, trade titles, and threaten enemies in the name of God. He is forming a question that no one in his world has yet had the audacity to ask aloud: what if power has always worked this way — and what if it always will?</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY COME -->
+    <section class="section" id="why">
+      <div class="reveal">
+        <p class="section-label">Why participate</p>
+        <h2>What you'll actually get out of it.</h2>
+        <p>This event is unusual in that it works on two levels simultaneously.</p>
+        <p><strong>As a historical experience:</strong> By the end of the simulation, you will have an intimate, lived understanding of the political geography of late-15th-century Europe: the factions, the stakes, the personalities, and the forces that made 1492 the year it was. This is not like learning from a book or lecture. It is something closer to memory.</p>
+        <p><strong>As a negotiation exercise:</strong> Most negotiation training uses simplified two-party scenarios. Conclave 1492 does not. Real political negotiations involve dozens of parties, shifting alliances, incomplete information, and interests that cannot simply be split down the middle. It is genuinely hard, genuinely fun, and a rare opportunity to try strategies you would never risk when the stakes are real. Pilots train in simulators so that when the emergency comes, it isn't the first time they've faced it. The conclave is the same.</p>
+        <div class="divider"><span class="divider-symbol">✦</span></div>
+        <p>Past participants have described it as one of the most memorable experiences of their lives. We believe the Lighthaven community is exactly the right audience.</p>
+      </div>
+    </section>
+
+    <!-- ORGANIZER NOTE -->
+    <section class="section" style="background: var(--parchment-dark); max-width:100%; padding: 5rem 2rem;">
+      <div style="max-width: 740px; margin: 0 auto;" class="reveal">
+        <p class="section-label">From the organizer</p>
+        <h2>A note on where this came from.</h2>
+        <p>In 2024, I ran this simulation as the final exercise for my university negotiation course. I reached out to historian and sci-fi author Ada Palmer, who developed <em>Temptemus Papam</em>, a massive papal election simulation at UChicago she created to teach Renaissance history. I got her materials and advice, and adapted the simulation down to 40 player characters, shifting the emphasis from historical literacy to negotiation and coalition-building.</p>
+        <p>The result was extraordinary. Students who had spent a semester studying negotiation theory encountered something that no case study or exercise had given them before: the genuine chaos and creativity of high-stakes politics among dozens of parties with incommensurable interests. Students got so invested in their papal election roles that after class ended, they got <em>back</em> on the Discord server and continued to argue <em>for hours</em> about who owed whom hundreds of thousands of florins. It got so bad I made a #pointless-bickering channel and forced them to move all their fighting there. Here's what students said afterward:</p>
+
+                <div class="pull-quote">
+                  "I can barely remember anything that happened before this simulation."
+                </div>
+                <div class="pull-quote">
+                  "I didn't know I could like a class so much. I was spending hours in outside meetings."
+                </div>
+                <div class="pull-quote">
+                  "The Papal Election was insane. The sheer amount of secret meetings I was having outside of class was both a reflection of my commitment, how stimulating the material was, but also how much I maybe just wanted to get ahead? The cheese was also a great touch."
+                </div>
+                <div class="pull-quote">
+                  (From an organizer:) "I literally gasped and double checked spy orders surrounding the King of France last night. He wrote some seriously self-incriminating stuff in his letter back to [REDACTED]."
+                </div>
+        <p>Lighthaven feels like the natural next home for this simulation. It easily hosts a group of 40 people across buildings, basements, secret chambers, and catacombs. Anyone who's spent time there will immediately understand why it works.</p>
+        <p>This page exists to gauge interest. If enough people want to come, we'll run it.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- EMAIL CAPTURE -->
+  <div class="email-section" id="register">
+    <div class="email-inner">
+      <p class="eyebrow" style="opacity:1; animation:none; margin-bottom:1rem;">Express Interest</p>
+      <h2>Who wants to be a cardinal?</h2>
+      <p>Leave your email and we'll reach out when dates and details are confirmed. No commitment required, this is purely to gauge interest and size the event.</p>
+
+      <div class="gform-embed">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSdd4cZuElPMV2kELsxslarnTDX4aPWM2Q7SYPJ9Qcg_KWedaw/viewform?embedded=true"
+          width="100%"
+          height="520"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+          style="border:none; display:block;"
+        >Loading…</iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Conclave 1492 &nbsp;·&nbsp; <a href="https://www.lighthaven.space" target="_blank">Lighthaven</a>, Berkeley CA &nbsp;·&nbsp; Adapted from Ada Palmer's <em>Temptemus Papam</em></p>
+  </footer>
+
+  <script>
+    const heroBg = document.getElementById('heroBg');
+
+    // Parallax only — no zoom animation
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY < window.innerHeight * 1.2) {
+        heroBg.style.transform = `translateY(${scrollY * 0.3}px)`;
+      }
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
