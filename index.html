@@ -305,12 +305,12 @@
 
     .timeline-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 1.5rem;
       margin-top: 2rem;
     }
 
-    @media (max-width: 560px) { .timeline-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 640px) { .timeline-grid { grid-template-columns: 1fr 1fr; } }
 
     .timeline-item {
       background: var(--cream);
@@ -628,7 +628,7 @@
         <p class="section-label">Why 1492</p>
         <h2>The pivot point of the modern world.</h2>
         <p>It is July 25, 1492. The papal throne is empty. The cardinals are gathering. And the world outside the Sistine Chapel is moving faster than anyone yet understands. The election of this pope will be different, for it happens at the exact hinge between the medieval and modern worlds. Every one of the forces below is already in motion.</p>
-        <div class="timeline-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 2.5rem;">
+        <div class="timeline-grid">
 
           <div class="timeline-item">
             <p class="timeline-date">~1450</p>
